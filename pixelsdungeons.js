@@ -834,10 +834,10 @@
                         this.cameras.main.startFollow(l, !0).setBounds(0, 0, e, i).setFollowOffset(-(4 * r.width) + 8 * r.width * this.settings.cameraShift / 100, -(4 * r.height) - r.height - 32);
                         let t = () => {
                             let e = window.innerWidth >= window.innerHeight 
-                                ? Math.max(window.innerWidth / 3000, window.innerHeight / 2000) 
-                                : window.innerWidth / 1500;
-                            this.cameras.main.setZoom(e); // Giảm giá trị `e` để tăng góc nhìn
-                        };
+                                ? Math.max(window.innerWidth / 5000, window.innerHeight / 4000) // Giảm các giá trị này
+                                : window.innerWidth / 2000; // Hoặc bạn có thể giảm giá trị này
+                            this.cameras.main.setZoom(e);
+                        };                        
                         t();
                         window.addEventListener("resize", t);                        
                         this.events.on("destroy", ()=>{
