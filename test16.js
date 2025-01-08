@@ -1310,49 +1310,34 @@
                 }
                 ),
                 this.controller.on("mine-diamond", e => {
-                    let i = this.room.state.players.get(this.room.sessionId);
-                    if (i && i.alive) {
+                    let player = this.room.state.players.get(this.room.sessionId);
+                    if (player && player.alive) {
                         if ("x" in e) {
-                            let i = this.tilemap.getTileAtWorldXY(e.x, e.y, !0);
-                            if (!i)
-                                return;
-                            let { diamondId: t, distance: r } = this.getTileInfo(i);
-                            if (t && r <= 10) { // Tăng khoảng cách tối đa lên 5
-                                this.mineDiamond(this.room.sessionId, t);
+                            let tile = this.tilemap.getTileAtWorldXY(e.x, e.y, true);
+                            if (!tile) return;
+                            let { diamondId, distance } = this.getTileInfo(tile);
+                            if (diamondId && distance <= 10) { // Tăng khoảng cách tối đa lên 10
+                                console.log("Click xa trên:", diamondId);
+                                this.mineDiamond(this.room.sessionId, diamondId);
                                 return;
                             }
                         } else {
-                            for (let e of [{
-                                x: i.position.x + 1,
-                                y: i.position.y
-                            }, {
-                                x: i.position.x - 1,
-                                y: i.position.y
-                            }, {
-                                x: i.position.x,
-                                y: i.position.y + 1
-                            }, {
-                                x: i.position.x,
-                                y: i.position.y - 1
-                            }, {
-                                x: i.position.x + 1,
-                                y: i.position.y + 1
-                            }, {
-                                x: i.position.x - 1,
-                                y: i.position.y - 1
-                            }, {
-                                x: i.position.x + 1,
-                                y: i.position.y - 1
-                            }, {
-                                x: i.position.x - 1,
-                                y: i.position.y + 1
-                            }]) {
-                                let i = this.tilemap.getTileAt(e.x, e.y, !0);
-                                if (!i)
-                                    continue;
-                                let { diamondId: t, distance: r } = this.getTileInfo(i);
-                                if (t && r <= 1) { // Tăng khoảng cách tối đa lên 5
-                                    this.mineDiamond(this.room.sessionId, t);
+                            for (let pos of [
+                                { x: player.position.x + 1, y: player.position.y },
+                                { x: player.position.x - 1, y: player.position.y },
+                                { x: player.position.x, y: player.position.y + 1 },
+                                { x: player.position.x, y: player.position.y - 1 },
+                                { x: player.position.x + 1, y: player.position.y + 1 },
+                                { x: player.position.x - 1, y: player.position.y - 1 },
+                                { x: player.position.x + 1, y: player.position.y - 1 },
+                                { x: player.position.x - 1, y: player.position.y + 1 }
+                            ]) {
+                                let tile = this.tilemap.getTileAt(pos.x, pos.y, true);
+                                if (!tile) continue;
+                                let { diamondId, distance } = this.getTileInfo(tile);
+                                if (diamondId && distance <= 10) { // Tăng khoảng cách tối đa lên 10
+                                    console.log("Click xa dưới:", diamondId);
+                                    this.mineDiamond(this.room.sessionId, diamondId);
                                     return;
                                 }
                             }
