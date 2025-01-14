@@ -1555,7 +1555,7 @@
                   let { diamondId: t, distance: r } = this.getTileInfo(i);
                   if (t && r <= 1) {
                     console.log(
-                      `Distance: ${distance} - id: ${this.room.sessionId} -----`
+                      `Distance: - id: ${this.room.sessionId} -----`
                     );
                     this.mineDiamond(this.room.sessionId, t);
                     return;
