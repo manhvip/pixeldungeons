@@ -994,10 +994,10 @@
                   (e =
                     window.innerWidth >= window.innerHeight
                       ? Math.max(
-                          window.innerWidth / 7000,
-                          window.innerHeight / 6000
+                          window.innerWidth / 5000,
+                          window.innerHeight / 4000
                         )
-                      : window.innerWidth / 3000),
+                      : window.innerWidth / 2000),
                     this.cameras.main.setZoom(e);
                 };
                 t(),
