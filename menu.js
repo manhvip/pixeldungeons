@@ -10,6 +10,12 @@ function createNavigationBox() {
     menu.style.zIndex = '9999';
 
     let select = document.createElement('select');
+    select.style.color = 'black'; // Mặc định chữ màu đen
+    select.style.background = 'white';
+    select.style.padding = '5px';
+    select.style.border = '1px solid gray';
+    select.style.fontSize = '14px';
+
     let options = [
         { label: '1', width: 5000, height: 4000 },
         { label: '2', width: 6000, height: 4500 },
@@ -18,6 +24,13 @@ function createNavigationBox() {
         { label: '5', width: 9000, height: 6000 }
     ];
 
+    let defaultOption = document.createElement('option');
+    defaultOption.value = "";
+    defaultOption.innerText = "Chọn một khung hình...";
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    select.appendChild(defaultOption);
+
     options.forEach(opt => {
         let option = document.createElement('option');
         option.value = JSON.stringify({ width: opt.width, height: opt.height });
@@ -25,30 +38,32 @@ function createNavigationBox() {
         select.appendChild(option);
     });
 
-    let btnApply = document.createElement('button');
-    btnApply.innerText = 'Apply';
-    btnApply.style.marginLeft = '5px';
-    btnApply.onclick = function () {
+    // Khi chọn một tùy chọn, áp dụng ngay lập tức và đổi màu chữ
+    select.onchange = function () {
+        select.style.color = 'red'; // Đổi màu chữ thành đỏ sau khi chọn
         let selectedOption = JSON.parse(select.value);
         window.localStorage.setItem('customWidth', selectedOption.width);
         window.localStorage.setItem('customHeight', selectedOption.height);
-        location.reload();
+        applyZoom(selectedOption.width, selectedOption.height);
     };
 
     menu.appendChild(document.createTextNode('Select View: '));
     menu.appendChild(select);
-    menu.appendChild(btnApply);
-
     document.body.appendChild(menu);
+}
+
+// Hàm cập nhật zoom ngay lập tức mà không cần reload
+function applyZoom(width, height) {
+    let e = window.innerWidth / width,
+        i = window.innerHeight / height;
+    window.cameras?.main?.setZoom(Math.max(e, i));
 }
 
 (function () {
     let storedWidth = localStorage.getItem('customWidth');
     let storedHeight = localStorage.getItem('customHeight');
     if (storedWidth && storedHeight) {
-        let e = window.innerWidth / parseFloat(storedWidth),
-            i = window.innerHeight / parseFloat(storedHeight);
-        window.cameras?.main?.setZoom(Math.max(e, i));
+        applyZoom(parseFloat(storedWidth), parseFloat(storedHeight));
     }
     createNavigationBox();
 })();
